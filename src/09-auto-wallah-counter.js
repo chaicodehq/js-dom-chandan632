@@ -127,7 +127,7 @@ export function moveToFront(element) {
   if (element.parentNode.firstElementChild === element) {
     return false;
   }
-  element.parentNode.insertBefore(element, element.parentNode.firstChild);
+  element.parentNode.insertBefore(element, element.parentNode.firstElementChild);
   return true;
 
 }
