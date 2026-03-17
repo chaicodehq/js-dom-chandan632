@@ -88,28 +88,79 @@
  */
 export function findQueueContainer(element) {
   // Your code here
+  if (!element) {
+    return null;
+  }
+  return element.closest(".queue-container");
 }
 
 export function getNextInQueue(element) {
   // Your code here
+  if (!element) {
+    return null;
+  }
+  return element.nextElementSibling;
 }
 
 export function getPreviousInQueue(element) {
   // Your code here
+  if (!element) {
+    return null;
+  }
+  return element.previousElementSibling;
 }
 
 export function getQueuePosition(element) {
   // Your code here
+  if (!element || !element.parentNode) {
+    return -1;
+  }
+  const siblings = Array.from(element.parentNode.children);
+  return siblings.indexOf(element) + 1;
 }
 
 export function moveToFront(element) {
   // Your code here
+  if (!element || !element.parentNode) {
+    return false;
+  }
+  if (element.parentNode.firstElementChild === element) {
+    return false;
+  }
+  element.parentNode.insertBefore(element, element.parentNode.firstChild);
+  return true;
+
 }
 
 export function removeFromQueue(element) {
   // Your code here
+  if (!element || !element.parentNode) {
+    return null;
+  }
+  return element.parentNode.removeChild(element);
 }
 
 export function getQueueStats(queueContainer) {
   // Your code here
+  if (!queueContainer) {
+    return null;
+  }
+  const stats = {
+    total: queueContainer.children.length,
+    waiting: 0,
+    serving: 0,
+    completed: 0
+  };
+
+  for (const child of queueContainer.children) {
+    if (child.classList.contains("waiting")) {
+      stats.waiting++;
+    } else if (child.classList.contains("serving")) {
+      stats.serving++;
+    } else if (child.classList.contains("completed")) {
+      stats.completed++;
+    }
+  }
+
+  return stats;
 }

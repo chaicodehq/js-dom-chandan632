@@ -66,16 +66,79 @@
  */
 export function updateChaiPrice(document, chaiType, newPrice) {
   // Your code here
+  if (typeof chaiType !== 'string' || chaiType.trim() === '' || typeof newPrice !== 'number' || newPrice <= 0) {
+    return false;
+  }
+
+  const priceElement = document.getElementById(`price-${chaiType}`);
+  if (!priceElement) {
+    return false;
+  }
+
+  priceElement.textContent = `₹${newPrice}`;
+  return true;
 }
 
 export function getChaiPrice(document, chaiType) {
   // Your code here
+  const priceElement = document.getElementById(`price-${chaiType}`);
+  if (!priceElement) {
+    return null;
+  }
+
+  const priceText = priceElement.textContent.trim();
+  if (!priceText.startsWith('₹')) {
+    return null;
+  }
+
+  const priceValue = parseFloat(priceText.slice(1));
+  return isNaN(priceValue) ? null : priceValue;
 }
 
 export function updateStallName(document, newName) {
   // Your code here
+  if (typeof newName !== 'string' || newName.trim() === '') {
+    return null;
+  }
+
+  const stallNameElement = document.querySelector('.stall-name');
+  if (!stallNameElement) {
+    return null;
+  }
+
+  const oldName = stallNameElement.textContent;
+  stallNameElement.textContent = newName;
+  return oldName;
 }
 
 export function highlightCheapestChai(document) {
   // Your code here
+  const priceElements = document.querySelectorAll('.chai-price');
+  if (priceElements.length === 0) {
+    return null;
+  }
+
+  let cheapestPrice = Infinity;
+  let cheapestChai = null;
+
+  priceElements.forEach(element => {
+    const priceText = element.textContent.trim();
+    if (priceText.startsWith('₹')) {
+      const priceValue = parseFloat(priceText.slice(1));
+      if (!isNaN(priceValue) && priceValue < cheapestPrice) {
+        cheapestPrice = priceValue;
+        cheapestChai = element.getAttribute('data-chai');
+      }
+    }
+  });
+
+  priceElements.forEach(element => {
+    if (element.getAttribute('data-chai') === cheapestChai) {
+      element.classList.add('cheapest');
+    } else {
+      element.classList.remove('cheapest');
+    }
+  });
+
+  return cheapestChai;
 }

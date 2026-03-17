@@ -73,20 +73,72 @@
  */
 export function applyBaseStyle(element, color, size) {
   // Your code here
+  if (!element) {
+    return null;
+  }
+
+  element.style.backgroundColor = color;
+  element.style.width = size + "px";
+  element.style.height = size + "px";
+  element.style.borderRadius = "50%";
+
+  return element;
 }
 
 export function setPatternStyle(element, styles) {
   // Your code here
+  if (!element) {
+    return -1;
+  }
+  if (typeof styles !== 'object' || styles === null) {
+    return 0;
+  }
+
+  let count = 0;
+  for (const [key, value] of Object.entries(styles)) {
+    element.style[key] = value;
+    count++;
+  }
+  return count;
 }
 
 export function getComputedStyles(element, properties) {
   // Your code here
+  if (!element || !Array.isArray(properties)) {
+    return null;
+  }
+
+  const result = {};
+  for (const prop of properties) {
+    result[prop] = element.style[prop] || "";
+  }
+  return result;
 }
 
 export function toggleVisibility(element) {
   // Your code here
+  if (!element) {
+    return null;
+  }
+
+  if (element.style.display === "none") {
+    element.style.display = "";
+    return "";
+  } else {
+    element.style.display = "none";
+    return "none";
+  }
 }
 
 export function animateElement(element, frames) {
   // Your code here
+  if (!element || !Array.isArray(frames) || frames.length === 0) {
+    return -1;
+  }
+
+  const lastFrame = frames[frames.length - 1];
+  for (const [key, value] of Object.entries(lastFrame)) {
+    element.style[key] = value;
+  }
+  return frames.length;
 }
